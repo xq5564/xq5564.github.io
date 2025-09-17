@@ -3,266 +3,541 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小七的网站</title>
+    <title>小七</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #5E72E4;
+            --secondary-color: #825EE4;
+            --text-color: #2D3748;
+            --light-color: #F7FAFC;
+            --dark-color: #1A202C;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: 'Noto Sans SC', sans-serif;
         }
         
         body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fd 100%);
+            color: var(--text-color);
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* 下雪效果 */
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1000;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         
+        /* 动态背景标题 */
         header {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             text-align: center;
-            padding: 2rem 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 5rem 0 8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: white;
+            transform: skewY(-3deg);
+            z-index: 1;
+        }
+        
+        header .container {
+            position: relative;
+            z-index: 2;
         }
         
         h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+            animation: fadeIn 1.5s ease;
         }
         
+        /* 玻璃态导航 */
         nav {
-            background-color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
         }
         
         nav ul {
             display: flex;
-            justify-content: center;
             list-style: none;
         }
         
         nav li {
-            margin: 0 1rem;
+            margin-left: 2rem;
         }
         
         nav a {
             text-decoration: none;
-            color: #555;
+            color: var(--text-color);
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            position: relative;
         }
         
-        nav a:hover {
-            background-color: #f0f0f0;
-            color: #6e8efb;
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 1.25rem;
+            width: calc(100% - 2.5rem);
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: var(--transition);
         }
         
+        nav a:hover::after {
+            transform: scaleX(1);
+        }
+        
+        /* 主要内容区 */
         section {
-            padding: 3rem 0;
+            padding: 6rem 0;
+            position: relative;
         }
         
-        .hero {
-            background-color: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin: 2rem auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        section:nth-child(even) {
+            background: white;
+        }
+        
+        .section-title {
             text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary-color);
         }
         
-        .hero h2 {
-            color: #6e8efb;
-            margin-bottom: 1rem;
-        }
-        
+        /* 卡片设计 */
         .features {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 3rem 0;
         }
         
         .feature {
             background: white;
-            width: 30%;
-            min-width: 250px;
-            margin: 1rem;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
             text-align: center;
-            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .feature:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
         }
         
         .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
             font-size: 2.5rem;
-            color: #6e8efb;
-            margin-bottom: 1rem;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
         }
         
         .feature h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #555;
+            color: var(--dark-color);
         }
         
-        footer {
-            background-color: #333;
-            color: white;
+        /* 英雄区域 */
+        .hero {
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
         }
         
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        
+        /* 社交图标 */
         .social-links {
-            margin: 1rem 0;
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
         }
         
-        .social-links a {
-            color: white;
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: var(--primary-color);
+            border-radius: 50%;
             margin: 0 10px;
             font-size: 1.5rem;
-            transition: color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
         }
         
-        .social-links a:hover {
-            color: #6e8efb;
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
         }
         
+        /* 页脚设计 */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 5rem 0 3rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        footer p {
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            opacity: 0;
+            animation-timing-function: ease;
+        }
+        
+        .animate.delay-1 { animation-delay: 0.2s; }
+        .animate.delay-2 { animation-delay: 0.4s; }
+        .animate.delay-3 { animation-delay: 0.6s; }
+        
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .features {
+            h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            
+            nav .container {
                 flex-direction: column;
-                align-items: center;
             }
             
-            .feature {
-                width: 80%;
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            nav li {
+                margin: 0 0.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 粒子背景容器 -->
+    <div id="particles-js"></div>
+    
+    <!-- 下雪效果容器 -->
+    <div class="snow"></div>
+    
     <header>
         <div class="container">
-            <h1>小七的网站</h1>
-            <p class="subtitle">欢迎来到我的个人空间</p>
+            <h1>小七的个人网站</h1>
+            <p class="subtitle">luguanluguanlulushijiandaole</p>
         </div>
     </header>
     
     <nav>
         <div class="container">
+            <a href="#" class="logo">小七</a>
             <ul>
                 <li><a href="#home">首页</a></li>
                 <li><a href="#about">关于我</a></li>
                 <li><a href="#projects">我的项目</a></li>
-                <li><a href="#contact">联系方式</a></li>
+                <li><a href="#contact">联系我</a></li>
             </ul>
         </div>
     </nav>
     
     <main class="container">
         <section id="home">
-            <div class="hero">
-                <h2>欢迎光临</h2>
-                <p>这里是小七的个人网站，分享我的生活、学习和工作点滴。感谢您的来访，希望您能找到感兴趣的内容。</p>
+            <h2 class="section-title animate" style="animation: fadeInDown 1s ease forwards;">欢迎来到我的世界</h2>
+            
+            <div class="hero animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                <p>这里是展示我创意与作品的数字空间，记录了我的成长历程与探索轨迹。让我们一起发现无限可能。</p>
             </div>
             
             <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">💡</div>
-                    <h3>创意分享</h3>
-                    <p>记录我的创意灵感和想法</p>
+                <div class="feature animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🎨</div>
+                    <h3>艺术创作</h3>
+                    <p>数字艺术与传统绘画的融合创新，探索视觉表达的边界。</p>
                 </div>
                 
-                <div class="feature">
-                    <div class="feature-icon">📚</div>
-                    <h3>学习笔记</h3>
-                    <p>分享我的学习心得和技巧</p>
+                <div class="feature animate delay-2" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">💻</div>
+                    <h3>编程开发</h3>
+                    <p>构建优雅的代码解决方案，追求性能与美学的平衡。</p>
                 </div>
                 
-                <div class="feature">
-                    <div class="feature-icon">🌈</div>
-                    <h3>生活点滴</h3>
-                    <p>记录生活中的美好时刻</p>
+                <div class="feature animate delay-3" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">📱</div>
+                    <h3>交互设计</h3>
+                    <p>创造流畅而富有情感的用户体验，连接人与技术。</p>
                 </div>
             </div>
         </section>
         
         <section id="about">
-            <div class="hero">
-                <h2>关于我</h2>
-                <p>我是小七，一个热爱生活、热爱学习的普通人。喜欢探索新事物，热爱编程、阅读和旅行。</p>
-                <p>在这个网站上，我会分享我的经验和见解，希望能与志同道合的朋友交流。</p>
+            <h2 class="section-title animate" style="animation: fadeInDown 1s ease forwards;">关于我</h2>
+            
+            <div class="hero animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                <p>我是小七，一名跨领域的创意工作者和技术开发者。我的热情在于将艺术与技术结合，创造有价值、有意义的内容与产品。</p>
+                <p>在日常工作中，我不断探索计算机科学、艺术设计和心理学的交叉点，寻求创新解决方案。</p>
+            </div>
+            
+            <div class="features">
+                <div class="feature animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🎓</div>
+                    <h3>教育背景</h3>
+                    <p>计算机科学与设计双学位，持续学习前沿技术与设计理论。</p>
+                </div>
+                
+                <div class="feature animate delay-2" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🔍</div>
+                    <h3>专业领域</h3>
+                    <p>全栈开发、UI/UX设计、数据可视化与交互式艺术创作。</p>
+                </div>
+                
+                <div class="feature animate delay-3" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🌟</div>
+                    <h3>个人特质</h3>
+                    <p>具有强烈的好奇心、批判性思维能力和审美敏感度。</p>
+                </div>
             </div>
         </section>
         
         <section id="projects">
-            <div class="hero">
-                <h2>我的项目</h2>
-                <p>以下是我近期参与的一些项目和作品展示。</p>
+            <h2 class="section-title animate" style="animation: fadeInDown 1s ease forwards;">精选项目</h2>
+            
+            <div class="hero animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                <p>以下是我参与或主导的部分代表性作品，展示了我在技术与创意方面的实践。</p>
             </div>
             
             <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">🖥️</div>
-                    <h3>个人博客</h3>
-                    <p>记录我的技术和生活见闻</p>
+                <div class="feature animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🌐</div>
+                    <h3>交互式数据平台</h3>
+                    <p>一个使用React和D3.js构建的数据可视化工具，让复杂信息变得直观易懂。</p>
                 </div>
                 
-                <div class="feature">
-                    <div class="feature-icon">📱</div>
-                    <h3>移动应用</h3>
-                    <p>开发的一款实用工具类应用</p>
+                <div class="feature animate delay-2" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">📲</div>
+                    <h3>移动端应用设计</h3>
+                    <p>专注于用户体验的金融理财应用，获得2022年优秀设计奖。</p>
                 </div>
                 
-                <div class="feature">
-                    <div class="feature-icon">🎨</div>
-                    <h3>设计作品</h3>
-                    <p>我的平面和UI设计作品集</p>
+                <div class="feature animate delay-3" style="animation: fadeIn 1s ease forwards;">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>生成艺术系列</h3>
+                    <p>利用算法处理传统绘画元素，创造独特而富有韵律感的数字艺术作品。</p>
                 </div>
             </div>
         </section>
         
         <section id="contact">
-            <div class="hero">
-                <h2>联系我</h2>
-                <p>如果您有任何问题或建议，欢迎通过以下方式与我联系。</p>
+            <h2 class="section-title animate" style="animation: fadeInDown 1s ease forwards;">保持联系</h2>
+            
+            <div class="hero animate delay-1" style="animation: fadeIn 1s ease forwards;">
+                <p>无论您有合作意向、项目咨询，或只是想交流创意想法，都欢迎与我联系。</p>
                 
                 <div class="social-links">
-                    <a href="#">&#x1f4e7;</a>
-                    <a href="#">&#x1f4bb;</a>
-                    <a href="#">&#x1f3a8;</a>
-                    <a href="#">&#x1f4f7;</a>
+                    <a href="#" class="social-link animate delay-1" style="animation: fadeIn 1s ease forwards;">✉️</a>
+                    <a href="#" class="social-link animate delay-2" style="animation: fadeIn 1s ease forwards;">🐦</a>
+                    <a href="#" class="social-link animate delay-3" style="animation: fadeIn 1s ease forwards;">📷</a>
+                    <a href="#" class="social-link animate delay-3" style="animation: fadeIn 1s ease forwards;">💼</a>
                 </div>
                 
-                <p>期待与您的交流！</p>
+                <p>期待与您共同创造更多可能性！</p>
             </div>
         </section>
     </main>
     
     <footer>
         <div class="container">
-            <p>© 2023 小七的网站 | 版权所有</p>
+            <p>© 2023 小七 All Rights Reserved</p>
+            <p>专业的创意与技术融合呈现</p>
         </div>
     </footer>
-</body>
-</html>
+
+    <!-- 粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // 初始化粒子效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 粒子背景初始化
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#5E72E4"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#825EE4",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
